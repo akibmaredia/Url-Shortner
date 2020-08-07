@@ -68,13 +68,12 @@ app.post('/url', async (req, res, next) => {
         })
         if(!slug) {
             slug = nanoid(5);
-        } 
-        // else {
-        //     const existing = await urls.findOne({slug});
-        //     if(existing) {
-        //         throw new Error('Slug in use. 🐌')
-        //     }
-        // }
+        } else {
+            const existing = await urls.findOne({slug});
+            if(existing) {
+                throw new Error('Slug in use. 🐌')
+            }
+        }
         slug = slug.toLowerCase();
         const newUrl = {
             url,
@@ -85,10 +84,6 @@ app.post('/url', async (req, res, next) => {
         res.json(created);
 
     } catch (error) {
-        if(error.message.startsWith('E11000')) {
-            error.message = 'Slug in use. 🐌'
-        }
-
         next(error);
     }
 });

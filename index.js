@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const yup = require("yup");
 const monk = require('monk');
 const {nanoid} = require("nanoid");
+const path = require("path");
 
 require('dotenv').config();
 
@@ -19,7 +20,7 @@ app.use(helmet());
 app.use(morgan('tiny'));
 app.use(cors());
 app.use(express.json());
-app.use(express.static('./public'));
+app.use(express.static(path.join(__dirname, './client/build')));
 
 app.get('/url/:id', (req, res) => {
     // TODO: Fetch a short url by id
@@ -29,12 +30,13 @@ app.get('/url/:id', (req, res) => {
 app.get('/:id', async (req, res) => {
     // TODO: Redirect to URL.
     const {id: slug} = req.params;
+    console.log(req.params);
     try {
         const url = await urls.findOne({slug});
         if(url) {
             res.redirect(url.url);
         }
-        res.redirect(`/?error= ${slug} not found`);
+        res.redirect(`/?error=${slug} not found`);
     } catch (error) {
         res.redirect(`/?error=Link not found`);    
     }
@@ -86,6 +88,10 @@ app.post('/url', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+});
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 const port = process.env.PORT || 1337;

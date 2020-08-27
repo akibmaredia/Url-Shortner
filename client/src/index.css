@@ -11,3 +11,16 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.headerShortner {
+  margin-top: 6rem;
+  align-content: center;
+  display: block;
+}
+
+.urlForm {
+  margin-top: 3rem;
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+}

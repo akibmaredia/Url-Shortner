@@ -9,13 +9,25 @@ class UrlForm extends React.Component {
         this.state = {
             url: '',
             slug: '',
+            create: '',
         };
         this.handleChangeUrl = this.handleChangeUrl.bind(this);
+        this.handleChangeSlug = this.handleChangeSlug.bind(this);   
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-    handleSubmit(event) {
+    async handleSubmit(event) {
         event.preventDefault();
+        var response = await fetch('/url', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                url: this.state.url,
+                slug: this.state.slug,
+            })
+        });
+        this.state.create = await response.json();
     }
 
     handleChangeUrl(event) {
@@ -55,6 +67,9 @@ class UrlForm extends React.Component {
                             Submit
                         </Button>
                     </Form>
+                </div>
+                <div className="createdUrl">
+                    <h3>{this.state.create}</h3>
                 </div>
             </>
         );

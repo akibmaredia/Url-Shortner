@@ -24,3 +24,9 @@ code {
   display: inline-flex;
   flex-direction: column;
 }
+
+.createdUrl {
+  margin-top: 2rem;
+  align-content: center;
+  display: block;
+}
